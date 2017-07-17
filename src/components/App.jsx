@@ -5,6 +5,7 @@ import Stage1 from './Stage1';
 import Stage3 from './Stage3';
 import { List, TextareaItem, WhiteSpace, NavBar, Drawer, TabBar, Icon } from 'antd-mobile';
 var marked = require('marked');
+// import MenuBar from './MenuBar';
 
 export default class App extends React.Component {
   constructor(props){
@@ -14,7 +15,7 @@ export default class App extends React.Component {
       open: false,
       focused: false,
       value:'',
-      selectedTab: 'redTab',
+      selectedTab: 'home',
       hidden: false,
     };
   }
@@ -54,6 +55,42 @@ export default class App extends React.Component {
 
   render() {
     // console.log(this.props.route, this.props.params, this.props.routeParams);
+    const tabBarData = [{
+      title: '首页',
+      key: 'home',
+      icon: 'koubei-o',
+      selectedIcon: 'koubei',
+      link: '/home',
+      style: {fontSize:20}
+    },{
+      title: '赛事',
+      key:'tournament',
+      icon: 'check-circle-o',
+      selectedIcon: 'check-circle',
+      link: '/tournament',
+      style: {fontSize:20}
+    },{
+      title: '小队',
+      key:'team',
+      icon: 'cross-circle-o',
+      selectedIcon: 'cross-circle',
+      link: '/team',
+      style: {fontSize:20}
+    },{
+      title: '小站',
+      key: 'station',
+      icon: 'koubei-o',
+      selectedIcon: 'koubei',
+      link: '/station',
+      style: {fontSize:20}
+    },{
+      title: '我的',
+      key:'me',
+      icon: 'koubei-o',
+      selectedIcon: 'koubei',
+      link: '/me',
+      style: {fontSize:20}
+    }]
     return (
       <div className="container">
         <NavBar mode="dark" style={{backgroundColor:'#19191d',color:'white'}}
@@ -62,134 +99,35 @@ export default class App extends React.Component {
         >
           {this.state.title}
         </NavBar>
-        <TabBar
-          unselectedTintColor="#5A5C5E"
-          tintColor="#CB6228"
-          barTintColor="#1c1c1e"
-          hidden={this.state.hidden}
+        
+
+
+
+      <TabBar
+        unselectedTintColor="#5A5C5E"
+        tintColor="#CB6228"
+        barTintColor="#1c1c1e"
+        hidden={this.state.hidden}
+      >
+        {tabBarData.map((item, index) => (
+          <TabBar.Item
+            key={item.key}
+            style={item.style}
+            title={item.title}
+            icon={<Icon type={item.icon} />}
+            selectedIcon={<Icon type={item.selectedIcon} />}
+            selected={this.state.selectedTab === item.key}
+            onPress={() => {
+              hashHistory.push(item.link)
+              this.setState({
+                selectedTab: item.key,
+              });
+            }}
           >
-        <TabBar.Item
-          title="首页"
-          key="首页"
-          style={{fontSize:20}}
-          icon={<div style={{
-            width: '0.44rem',
-            height: '0.44rem',
-            background: 'url(https://zos.alipayobjects.com/rmsportal/sifuoDUQdAFKAVcFGROC.svg) center center /  0.42rem 0.42rem no-repeat' }}
-          />
-          }
-          selectedIcon={<div style={{
-            width: '0.44rem',
-            height: '0.44rem',
-            background: 'url(https://zos.alipayobjects.com/rmsportal/iSrlOTqrKddqbOmlvUfq.svg) center center /  0.42rem 0.42rem no-repeat' }}
-          />
-          }
-          selected={this.state.selectedTab === 'blueTab'}
-          badge={1}
-          onPress={() => {
-            this.setState({
-              selectedTab: 'blueTab',
-            });
-          }}
-          data-seed="logId"
-        >
-          {this.renderContent('首页')}
-        </TabBar.Item>
-
-        <TabBar.Item
-          title="赛事"
-          key="赛事"
-          style={{fontSize:20}}
-          icon={<div style={{
-            width: '0.44rem',
-            height: '0.44rem',
-            background: 'url(https://zos.alipayobjects.com/rmsportal/sifuoDUQdAFKAVcFGROC.svg) center center /  0.42rem 0.42rem no-repeat' }}
-          />
-          }
-          selectedIcon={<div style={{
-            width: '0.44rem',
-            height: '0.44rem',
-            background: 'url(https://zos.alipayobjects.com/rmsportal/iSrlOTqrKddqbOmlvUfq.svg) center center /  0.42rem 0.42rem no-repeat' }}
-          />
-          }
-          selected={this.state.selectedTab === 'blueTab'}
-          badge={1}
-          onPress={() => {
-            this.setState({
-              selectedTab: 'blueTab',
-            });
-          }}
-          data-seed="logId"
-        >
-        {this.renderContent('赛事')}
-        </TabBar.Item>
-        <TabBar.Item
-          style={{fontSize:20}}
-          icon={<Icon type="koubei-o" size="md" />}
-          selectedIcon={<Icon type="koubei" size="md" />}
-          title="小队"
-          key="小队"
-          // badge={'new'}
-          selected={this.state.selectedTab === 'redTab'}
-          onPress={() => {
-            hashHistory.push("/s1");
-            this.setState({
-              selectedTab: 'redTab',
-            });
-          }}
-          data-seed="logId1"
-        >
-          
-            {this.renderContent('小队')}
-          
-        </TabBar.Item>
-          
-        <TabBar.Item
-          style={{fontSize:20}}
-          icon={
-            <div style={{
-              width: '0.44rem',
-              height: '0.44rem',
-              background: 'url(https://zos.alipayobjects.com/rmsportal/psUFoAMjkCcjqtUCNPxB.svg) center center /  0.42rem 0.42rem no-repeat' }}
-            />
-          }
-          selectedIcon={
-            <div style={{
-              width: '0.44rem',
-              height: '0.44rem',
-              background: 'url(https://zos.alipayobjects.com/rmsportal/IIRLrXXrFAhXVdhMWgUI.svg) center center /  0.42rem 0.42rem no-repeat' }}
-            />
-          }
-          title="小站"
-          key="小站"
-          dot
-          selected={this.state.selectedTab === 'greenTab'}
-          onPress={() => {
-            this.setState({
-              selectedTab: 'greenTab',
-            });
-          }}
-        >
-          {this.renderContent('小站')}
-        </TabBar.Item>
-
-        <TabBar.Item
-          style={{fontSize:20}}
-          icon={{ uri: 'https://zos.alipayobjects.com/rmsportal/asJMfBrNqpMMlVpeInPQ.svg' }}
-          selectedIcon={{ uri: 'https://zos.alipayobjects.com/rmsportal/gjpzzcrPMkhfEqgbYvmN.svg' }}
-          title="我的"
-          key="我的"
-          selected={this.state.selectedTab === 'yellowTab'}
-          onPress={() => {
-            this.setState({
-              selectedTab: 'yellowTab',
-            });
-          }}
-        >
-          {this.renderContent('我的')}
-        </TabBar.Item>
+          <Stage2 />
+          </TabBar.Item>
+        ))}
       </TabBar>
-
         {/*<div className="fixed-bottom">底部固定条</div>*/}
       </div>
     );

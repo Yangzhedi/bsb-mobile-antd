@@ -32,9 +32,9 @@ ReactDOM.render(
   <Router history={hashHistory}>
     <Route path="/" component={App}>
       <IndexRoute component={Index} />
-      <Route path="s1" component={Stage1} />
-      <Route path="s2" component={Stage2} />
-      <Route path="s3" component={Stage3} />
+      <Route path="home" component={Stage1} />
+      <Route path="tournament" component={Stage2} />
+      <Route path="team" component={Stage3} />
     </Route>
   </Router>
 , document.getElementById('example'));
