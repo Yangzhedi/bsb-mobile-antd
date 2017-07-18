@@ -13,7 +13,7 @@ export default class Demo extends React.Component {
   render() {
     return (<div>
 
-      <App tab='tournament'></App>
-      Stage 2</div>);
+      <App tab='station'></App>
+      Stage 4</div>);
   }
 }

@@ -10,6 +10,8 @@ import App from './components/App';
 import Stage1 from './components/Stage1';
 import Stage2 from './components/Stage2';
 import Stage3 from './components/Stage3';
+import Stage4 from './components/Stage4';
+import Stage5 from './components/Stage5';
 
 import './index.less';
 
@@ -30,11 +32,13 @@ class Index extends React.Component {
 
 ReactDOM.render(
   <Router history={hashHistory}>
-    <Route path="/" component={App}>
-      <IndexRoute component={Index} />
+    <Route path="/">
+      <IndexRoute component={Stage1} />
       <Route path="home" component={Stage1} />
       <Route path="tournament" component={Stage2} />
       <Route path="team" component={Stage3} />
+      <Route path="station" component={Stage4} />
+      <Route path="me" component={Stage5} />
     </Route>
   </Router>
 , document.getElementById('example'));

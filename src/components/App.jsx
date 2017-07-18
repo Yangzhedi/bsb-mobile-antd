@@ -15,21 +15,15 @@ export default class App extends React.Component {
       open: false,
       focused: false,
       value:'',
-      selectedTab: 'home',
+      selectedTab:'home',
       hidden: false,
     };
   }
-  componentWillMount(){
-    marked.setOptions({
-      renderer: new marked.Renderer(),
-      gfm: true,
-      tables: true,
-      breaks: false,
-      pedantic: false,
-      sanitize: false,
-      smartLists: true,
-      smartypants: false
-    });
+  componentWillReceiveProps(nextprops){
+    console.log(nextprops)
+     this.setState({
+       selectedTab: nextprops.tab,
+     });
   }
   renderContent(pageText) {
     // const obj = this.state.selectedTab == 'redTab' ?  <Stage2></Stage2> :  <Stage3></Stage3>
@@ -55,46 +49,55 @@ export default class App extends React.Component {
 
   render() {
     // console.log(this.props.route, this.props.params, this.props.routeParams);
+    console.log(this.state.selectedTab)
     const tabBarData = [{
       title: '首页',
       key: 'home',
+      link: '/home',
       icon: 'koubei-o',
       selectedIcon: 'koubei',
-      link: '/home',
-      style: {fontSize:20}
+      style: {fontSize:20},
+      children: <Stage1 />
     },{
       title: '赛事',
       key:'tournament',
+      link: '/tournament',
       icon: 'check-circle-o',
       selectedIcon: 'check-circle',
-      link: '/tournament',
-      style: {fontSize:20}
+      style: {fontSize:20},
+      children: <Stage2 />
     },{
       title: '小队',
       key:'team',
+      link: '/team',
       icon: 'cross-circle-o',
       selectedIcon: 'cross-circle',
-      link: '/team',
-      style: {fontSize:20}
+      style: {fontSize:20},
+      children: <Stage3 />
     },{
       title: '小站',
       key: 'station',
+      link: '/station',
       icon: 'koubei-o',
       selectedIcon: 'koubei',
-      link: '/station',
-      style: {fontSize:20}
+      style: {fontSize:20},
+      children: <Stage1 />
     },{
       title: '我的',
       key:'me',
+      link: '/me',
       icon: 'koubei-o',
       selectedIcon: 'koubei',
-      link: '/me',
-      style: {fontSize:20}
+      style: {fontSize:20},
+      children: <Stage2 />
     }]
     return (
       <div className="container">
         <NavBar mode="dark" style={{backgroundColor:'#19191d',color:'white'}}
-          onLeftClick={() => hashHistory.goBack()}
+          onLeftClick={() => {
+            hashHistory.goBack()
+            console.log(hashHistory)
+          }}
           rightContent={<b onClick={() => this.setState({ open: true,hidden:!this.state.hidden })}>...</b>}
         >
           {this.state.title}
@@ -119,12 +122,8 @@ export default class App extends React.Component {
             selected={this.state.selectedTab === item.key}
             onPress={() => {
               hashHistory.push(item.link)
-              this.setState({
-                selectedTab: item.key,
-              });
             }}
           >
-          <Stage2 />
           </TabBar.Item>
         ))}
       </TabBar>
