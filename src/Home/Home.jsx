@@ -1,6 +1,6 @@
 import React from "react";
 import {RefreshControl, ListView, Carousel, SwipeAction, Button, NavBar} from "antd-mobile";
-import App from "./App";
+import MenuBar from "../components/MenuBar";
 
 class Carou extends React.Component {
     state = {
@@ -52,7 +52,7 @@ export default class Demo extends React.Component {
     render() {
         return (
             <div>
-                <App tab='home'></App>
+                <MenuBar tab='home'></MenuBar>
                 Home
             </div>
         );

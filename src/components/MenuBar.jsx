@@ -1,12 +1,44 @@
 import React from "react";
 import {hashHistory} from "react-router";
-import Stage2 from "./Stage2";
-import Stage1 from "./Stage1";
-import Stage3 from "./Stage3";
 import {List, TextareaItem, WhiteSpace, NavBar, Drawer, TabBar, Icon} from "antd-mobile";
 var marked = require('marked');
 // import MenuBar from './MenuBar';
-
+const tabBarData = [{
+    title: '首页',
+    key: 'home',
+    link: '/home',
+    icon: 'koubei-o',
+    selectedIcon: 'koubei',
+    style: {fontSize: 20}
+}, {
+    title: '赛事',
+    key: 'tournament',
+    link: '/tournament',
+    icon: 'check-circle-o',
+    selectedIcon: 'check-circle',
+    style: {fontSize: 20}
+}, {
+    title: '小队',
+    key: 'team',
+    link: '/team',
+    icon: 'cross-circle-o',
+    selectedIcon: 'cross-circle',
+    style: {fontSize: 20}
+}, {
+    title: '小站',
+    key: 'station',
+    link: '/station',
+    icon: 'koubei-o',
+    selectedIcon: 'koubei',
+    style: {fontSize: 20}
+}, {
+    title: '我的',
+    key: 'me',
+    link: '/me',
+    icon: 'koubei-o',
+    selectedIcon: 'koubei',
+    style: {fontSize: 20}
+}]
 export default class App extends React.Component {
     constructor(props) {
         super(props);
@@ -57,47 +89,7 @@ export default class App extends React.Component {
     render() {
         // console.log(this.props.route, this.props.params, this.props.routeParams);
         console.log(this.state.selectedTab);
-        const tabBarData = [{
-            title: '首页',
-            key: 'home',
-            link: '/home',
-            icon: 'koubei-o',
-            selectedIcon: 'koubei',
-            style: {fontSize: 20},
-            children: <Stage1 />
-        }, {
-            title: '赛事',
-            key: 'tournament',
-            link: '/tournament',
-            icon: 'check-circle-o',
-            selectedIcon: 'check-circle',
-            style: {fontSize: 20},
-            children: <Stage2 />
-        }, {
-            title: '小队',
-            key: 'team',
-            link: '/team',
-            icon: 'cross-circle-o',
-            selectedIcon: 'cross-circle',
-            style: {fontSize: 20},
-            children: <Stage3 />
-        }, {
-            title: '小站',
-            key: 'station',
-            link: '/station',
-            icon: 'koubei-o',
-            selectedIcon: 'koubei',
-            style: {fontSize: 20},
-            children: <Stage1 />
-        }, {
-            title: '我的',
-            key: 'me',
-            link: '/me',
-            icon: 'koubei-o',
-            selectedIcon: 'koubei',
-            style: {fontSize: 20},
-            children: <Stage2 />
-        }]
+        
         return (
             <div className="container">
                 <NavBar mode="dark" style={{backgroundColor:'#19191d',color:'white'}}
