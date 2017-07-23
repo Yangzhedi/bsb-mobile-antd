@@ -21,7 +21,9 @@ module.exports = {
     disableHostCheck: true
   },
 
-  entry: { "index": path.resolve(__dirname, 'src/index') },
+  entry: { 
+    "index": path.resolve(__dirname, 'src/index') 
+  },
 
   output: {
     filename: '[name].js',

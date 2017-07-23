@@ -9,9 +9,9 @@ import { Router, Route, hashHistory, IndexRoute, Link } from 'react-router';
 import MenuBar from './components/MenuBar';
 import Home from './Home/Home';
 import Tournament from './Tournament/Tournament';
-import Stage3 from './components/Stage3';
-import Stage4 from './components/Stage4';
-import Stage5 from './components/Stage5';
+import Team from './Team/Team';
+import Station from './Station/Station';
+import Me from './Me/Me';
 
 import './index.less';
 
@@ -36,9 +36,9 @@ ReactDOM.render(
       <IndexRoute component={Home} />
       <Route path="home" component={Home} />
       <Route path="tournament" component={Tournament} />
-      <Route path="team" component={Stage3} />
-      <Route path="station" component={Stage4} />
-      <Route path="me" component={Stage5} />
+      <Route path="team" component={Team} />
+      <Route path="station" component={Station} />
+      <Route path="me" component={Me} />
     </Route>
   </Router>
 , document.getElementById('example'));

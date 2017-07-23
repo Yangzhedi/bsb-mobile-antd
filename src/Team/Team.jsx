@@ -7,7 +7,8 @@ import { hashHistory, browserHistory, Link } from 'react-router';
 import { Picker, NavBar, List, Checkbox } from 'antd-mobile';
 import enUs from 'antd-mobile/lib/date-picker/locale/en_US';
 
-import MenuBar from './MenuBar';
+
+import MenuBar from "../components/MenuBar";
 const CheckboxItem = Checkbox.CheckboxItem;
 
 // 如果不是使用 List.Item 作为 children
@@ -42,7 +43,7 @@ class Demo extends React.Component {
     return (<div>
 
       <MenuBar tab='team'></MenuBar>
-      Stage 3</div>);
+      Team</div>);
   }
 }
 

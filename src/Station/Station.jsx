@@ -2,7 +2,7 @@ import React from 'react';
 import {
   SearchBar, Tabs, Steps,
 } from 'antd-mobile';
-import MenuBar from './MenuBar';
+import MenuBar from "../components/MenuBar";
 
 const TabPane = Tabs.TabPane;
 
@@ -14,6 +14,6 @@ export default class Demo extends React.Component {
     return (<div>
 
       <MenuBar tab='station'></MenuBar>
-      Stage 4</div>);
+      Station</div>);
   }
 }
