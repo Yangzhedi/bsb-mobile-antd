@@ -51,41 +51,29 @@ export default class App extends React.Component {
             hidden: false,
         };
     }
-
+    componentWillMount() {
+        
+        const path = hashHistory.getCurrentLocation().pathname;
+        console.log(path);
+        // 如果第一次进入，不会触发componentWillReceiveProps, 设置为home
+        if(path === '/'){
+            this.setState({
+                selectedTab: 'home',
+            });
+        }else{
+            this.setState({
+                selectedTab: hashHistory.getCurrentLocation().pathname.replace('/',''),
+            });
+        }
+        
+    }
+    // 当节点初次被放入的时候 componentWillReceiveProps 并不会被触发。
     componentWillReceiveProps(nextprops) {
         console.log(nextprops)
         this.setState({
             selectedTab: nextprops.tab,
         });
     }
-    componentWillMount() {
-        console.log(hashHistory.getCurrentLocation().pathname)
-        this.setState({
-            selectedTab: hashHistory.getCurrentLocation().pathname.replace('/',''),
-        });
-    }
-    renderContent(pageText) {
-        // const obj = this.state.selectedTab == 'redTab' ?  <Stage2></Stage2> :  <Stage3></Stage3>
-        return (
-            <div style={{ backgroundColor: 'white', height: '100%', textAlign: 'center' }}>
-
-                <div style={{ paddingTop: 60 }}>你已点击“{pageText}” tab， 当前展示“{pageText}”信息
-
-                </div>
-                <a style={{ display: 'block', marginTop: 40, marginBottom: 600, color: '#108ee9' }}
-                   onClick={(e) => {
-              e.preventDefault();
-              this.setState({
-                hidden: !this.state.hidden,
-              });
-            }}
-                >
-                    点击切换 tab-bar 显示/隐藏
-                </a>
-            </div>
-        );
-    }
-
     render() {
         // console.log(this.props.route, this.props.params, this.props.routeParams);
         console.log(this.state.selectedTab);

@@ -50,10 +50,11 @@ export default class Demo extends React.Component {
     }
 
     render() {
+        const page = "<strong>test</strong>";
         return (
             <div>
                 <MenuBar tab='home'></MenuBar>
-                Home
+                Home<div dangerouslySetInnerHTML={{__html: page}} ></div>
             </div>
         );
     }
