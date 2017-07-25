@@ -27,7 +27,7 @@ class Carou extends React.Component {
 
 let pageIndex = 0;
 
-export default class Demo extends React.Component {
+export default class Home extends React.Component {
     constructor(props) {
         super(props);
         const dataSource = new ListView.DataSource({
@@ -41,7 +41,7 @@ export default class Demo extends React.Component {
         this.state = {
             dataSource: dataSource.cloneWithRows(this.initData),
             refreshing: false,
-            isLoading: false,
+            isLoading: false
         };
     }
 
@@ -54,7 +54,8 @@ export default class Demo extends React.Component {
         return (
             <div>
                 <MenuBar tab='home'></MenuBar>
-                Home<div dangerouslySetInnerHTML={{__html: page}} ></div>
+                Home
+                <div dangerouslySetInnerHTML={{__html: page}}></div>
             </div>
         );
     }

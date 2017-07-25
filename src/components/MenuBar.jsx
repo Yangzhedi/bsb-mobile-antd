@@ -38,8 +38,8 @@ const tabBarData = [{
     icon: 'koubei-o',
     selectedIcon: 'koubei',
     style: {fontSize: 20}
-}]
-export default class App extends React.Component {
+}];
+export default class MenuBar extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -48,7 +48,7 @@ export default class App extends React.Component {
             focused: false,
             value: '',
             selectedTab: 'home',
-            hidden: false,
+            hidden: false
         };
     }
     componentWillMount() {
@@ -58,7 +58,7 @@ export default class App extends React.Component {
         // 如果第一次进入，不会触发componentWillReceiveProps, 设置为home
         if(path === '/'){
             this.setState({
-                selectedTab: 'home',
+                selectedTab: 'home'
             });
         }else{
             this.setState({
@@ -69,9 +69,9 @@ export default class App extends React.Component {
     }
     // 当节点初次被放入的时候 componentWillReceiveProps 并不会被触发。
     componentWillReceiveProps(nextprops) {
-        console.log(nextprops)
+        console.log(nextprops);
         this.setState({
-            selectedTab: nextprops.tab,
+            selectedTab: nextprops.tab
         });
     }
     render() {
@@ -82,7 +82,7 @@ export default class App extends React.Component {
             <div className="container">
                 <NavBar mode="dark" style={{backgroundColor:'#19191d',color:'white'}}
                     onLeftClick={() => {
-                        hashHistory.goBack()
+                        hashHistory.goBack();
                         console.log(hashHistory)
                     }}
                     rightContent={<b onClick={() => this.setState({ open: true,hidden:!this.state.hidden })}>...</b>}
