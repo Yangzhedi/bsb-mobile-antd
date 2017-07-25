@@ -1,5 +1,6 @@
 import React from "react";
-import {SearchBar, Tabs, Steps, TextareaItem} from "antd-mobile";
+import {hashHistory} from "react-router";
+import {Button, Tabs, Steps, TextareaItem} from "antd-mobile";
 import MenuBar from "../components/MenuBar";
 
 const TabPane = Tabs.TabPane;
@@ -32,6 +33,11 @@ export default class Me extends React.Component {
             <div>
                 <MenuBar tab='me'></MenuBar>
                 Me
+                <Button type="primary" inline size="small" 
+                          onClick={() => {
+                                hashHistory.push('signinup')
+                            }}
+                >登录</Button>
                 <TextareaItem
                     title="标题"
                     placeholder="write ur markdown here"
@@ -45,6 +51,7 @@ export default class Me extends React.Component {
                     }}
                 />
                 <div dangerouslySetInnerHTML={{__html: marked(this.state.value)}}></div>
-            </div>);
+            </div>
+        );
     }
 }

@@ -12,6 +12,7 @@ import Tournament from './Tournament/Tournament';
 import Team from './Team/Team';
 import Station from './Station/Station';
 import Me from './Me/Me';
+import SignInUp from './Me/SignInUp';
 
 import './index.less';
 
@@ -39,6 +40,7 @@ ReactDOM.render(
       <Route path="team" component={Team} />
       <Route path="station" component={Station} />
       <Route path="me" component={Me} />
+        <Route path="signinup" component={SignInUp} />
     </Route>
   </Router>
 , document.getElementById('example'));
