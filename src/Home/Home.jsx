@@ -1,31 +1,7 @@
 import React from "react";
-import {RefreshControl, ListView, Carousel, SwipeAction, Button, NavBar} from "antd-mobile";
+import {RefreshControl, ListView, Carousel, SwipeAction, Button, NavBar, SearchBar} from "antd-mobile";
 import MenuBar from "../components/MenuBar";
-
-class Carou extends React.Component {
-    state = {
-        data: ['AiyWuByWklrrUDlFignR', 'TekJlZRVCjLFexlOCuWn', 'IJOtIlfsYdTyaDTRVrLI'],
-        initialHeight: 400,
-    }
-
-    render() {
-        return (
-            <Carousel infinite>
-                {this.state.data.map(ii => (
-                    <a key={ii}
-                       style={{
-              display: 'block', height: this.state.initialHeight,
-              background: `url(https://zos.alipayobjects.com/rmsportal/${ii || 'QcWDkUhvYIVEcvtosxMF'}.png) no-repeat`,
-              backgroundSize: 'cover'
-            }}
-                    />
-                ))}
-            </Carousel>
-        );
-    }
-}
-
-let pageIndex = 0;
+// var dataRepository=new DataRepository(FLAG_STORAGE.flag_trending)
 
 export default class Home extends React.Component {
     constructor(props) {
@@ -49,6 +25,34 @@ export default class Home extends React.Component {
         // this.props.changeTitle('Stage 1');
     }
 
+    onSubmit(value){
+        console.log(value)
+        const page= {
+            page: 0,
+            size: 10,
+            sort:["id,asc"]
+        }
+        const data= {
+            name:value
+        }
+        const url = 'http://localhost:8080/api/bsb-tournaments/viewer/query/tournament'
+        fetch(url,{
+            method:'POST',
+            mode: "no-cors",
+            header:{
+                'Accept':'application/json',
+                'Content-type':'application/json'
+            },
+            body:JSON.stringify(page)
+        })
+        .then(response => response.json())
+        .then(result => {
+            console.log(result)
+        })
+        .catch(error => {
+            // this.setState{...}
+        })
+    }
     render() {
         const page = "<strong>test</strong>";
         return (
@@ -56,6 +60,7 @@ export default class Home extends React.Component {
                 <MenuBar tab='home'></MenuBar>
                 Home
                 <div dangerouslySetInnerHTML={{__html: page}}></div>
+                <SearchBar placeholder="搜索" onSubmit={this.onSubmit}/>
             </div>
         );
     }
