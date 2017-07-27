@@ -39,6 +39,13 @@ const tabBarData = [{
     selectedIcon: 'koubei',
     style: {fontSize: 20}
 }];
+const translation = {
+    'home':'首页',
+    'tournament':'赛事',
+    'station':'小站',
+    'team':'小队',
+    'me':'我的',
+}
 export default class MenuBar extends React.Component {
     constructor(props) {
         super(props);
@@ -71,7 +78,8 @@ export default class MenuBar extends React.Component {
     componentWillReceiveProps(nextprops) {
         console.log(nextprops);
         this.setState({
-            selectedTab: nextprops.tab
+            selectedTab: nextprops.tab,
+            title: translation[nextprops.tab]
         });
     }
     render() {
