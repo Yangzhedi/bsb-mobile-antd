@@ -26,15 +26,15 @@ export default class Home extends React.Component {
     }
 
     onSubmit(value){
-        console.log(value)
+        console.log(value);
         const page= {
             page: 0,
             size: 10,
             sort:["id,asc"]
-        }
+        };
         const data= {
             name:value
-        }
+        };
         const url = 'http://localhost:8080/api/bsb-tournaments/viewer/query/tournament'
         fetch(url,{
             method:'POST',

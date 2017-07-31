@@ -34,9 +34,7 @@ class Team extends React.Component {
         // this.props.changeTitle('Stage 3');
     }
     onClick(){
-
         const url = 'http://localhost:8080/api/bsb-tournaments/viewer/3';
-       
         var this_ = this;
         new Promise((resolve,reject)=>{
             fetch(url)
