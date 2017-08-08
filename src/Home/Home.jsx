@@ -39,7 +39,7 @@ export default class Home extends React.Component {
         fetch(url,{
             method:'POST',
             mode: "no-cors",
-            header:{
+            headers:{
                 'Accept':'application/json',
                 'Content-type':'application/json'
             },
@@ -58,9 +58,11 @@ export default class Home extends React.Component {
         return (
             <div>
                 <MenuBar tab='home'></MenuBar>
-                Home
+                Home-
                 <div dangerouslySetInnerHTML={{__html: page}}></div>
                 <SearchBar placeholder="搜索" onSubmit={this.onSubmit}/>
+                <iframe  width='100%' height='100%' style={{border:'none',minHeight:'4rem'}} src="https://www.bisaibang.com/widget/tournament/bracket/3235"></iframe>
+                <div style={{height:'1.5rem'}}></div>
             </div>
         );
     }

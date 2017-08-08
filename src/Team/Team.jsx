@@ -3,6 +3,7 @@ import {createForm} from "rc-form";
 import {Picker, NavBar, List, Checkbox, Button} from "antd-mobile";
 import MenuBar from "../components/MenuBar"; // moment.min ~= 48kb
 const CheckboxItem = Checkbox.CheckboxItem;
+let Global = require('../Components/Global');
 
 // 如果不是使用 List.Item 作为 children
 const CustomChildren = (props) => {
@@ -56,7 +57,8 @@ class Team extends React.Component {
     render() {
         const {getFieldProps} = this.props.form;
         const {pickerValue, dpValue} = this.state;
-        console.log(this.state.data)
+        console.log(Global)
+        console.log(document.cookie)
         return (
             <div>
                 <MenuBar tab='team'></MenuBar>

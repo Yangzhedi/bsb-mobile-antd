@@ -2,6 +2,8 @@ import React from "react";
 import {hashHistory} from "react-router";
 import {List, TextareaItem, WhiteSpace, NavBar, Drawer, TabBar, Icon} from "antd-mobile";
 var marked = require('marked');
+
+let Global = require('../Components/Global');
 // import MenuBar from './MenuBar';
 const tabBarData = [{
     title: '首页',
@@ -57,11 +59,51 @@ export default class MenuBar extends React.Component {
             selectedTab: 'home',
             hidden: false
         };
+
+        this.getCookie = this.getCookie.bind(this);
+        this.getCurrentCount = this.getCurrentCount.bind(this);
     }
+    getCookie(c_name){
+        if (document.cookie.length>0){
+            var c_start=document.cookie.indexOf(c_name + "=")
+            if (c_start!=-1){ 
+                c_start=c_start + c_name.length+1 
+                var c_end=document.cookie.indexOf(";",c_start)
+                if (c_end==-1) c_end=document.cookie.length
+                return unescape(document.cookie.substring(c_start,c_end))
+            } 
+        }
+        return ""
+    }
+    getCurrentCount(token){
+        const url = 'http://localhost:8080/api/account';
+        var this_ = this;
+        console.log(token)
+        new Promise((resolve,reject)=>{
+            fetch(url,{
+                    headers:{
+                        'Authorization':'Bearer '+token
+                    }
+                })
+                .then((response)=>response.json())
+                .then((result)=>{
+                    Global.user = result;
+                    console.log(result);
+                    console.log('成功登陆')
+                })
+                .then((result)=>{
+                    resolve(result);
+                })
+                .catch(error=>{
+                    reject(error);
+                })
+        })
+    }
+
     componentWillMount() {
         
         const path = hashHistory.getCurrentLocation().pathname;
-        console.log(path);
+        // console.log(path);
         // 如果第一次进入，不会触发componentWillReceiveProps, 设置为home
         if(path === '/'){
             this.setState({
@@ -72,11 +114,14 @@ export default class MenuBar extends React.Component {
                 selectedTab: hashHistory.getCurrentLocation().pathname.replace('/',''),
             });
         }
-        
+        console.log(this.getCookie('id_token'))
+        this.getCurrentCount(this.getCookie('id_token'))
     }
+    
+    
     // 当节点初次被放入的时候 componentWillReceiveProps 并不会被触发。
     componentWillReceiveProps(nextprops) {
-        console.log(nextprops);
+        // console.log(nextprops);
         this.setState({
             selectedTab: nextprops.tab,
             title: translation[nextprops.tab]
@@ -84,8 +129,9 @@ export default class MenuBar extends React.Component {
     }
     render() {
         // console.log(this.props.route, this.props.params, this.props.routeParams);
-        console.log(this.state.selectedTab);
+        // console.log(this.state.selectedTab);
         
+        console.log('先进我')
         return (
             <div className="container">
                 <NavBar mode="dark" style={{backgroundColor:'#19191d',color:'white'}}

@@ -3,6 +3,7 @@ import {hashHistory} from "react-router";
 import {Button, Tabs, NavBar, InputItem} from "antd-mobile";
 import { createForm } from 'rc-form';
 var marked = require('marked');
+let Global = require('../Components/Global');
 
 class SignInUpDemo extends React.Component {
     constructor(props) {
@@ -14,6 +15,7 @@ class SignInUpDemo extends React.Component {
         };
         this.onChange = this.onChange.bind(this);
         this.onClick = this.onClick.bind(this);
+        this.getCurrentCount = this.getCurrentCount.bind(this);
     }
     componentDidMount() {
         // this.props.changeTitle('Stage 2');
@@ -22,16 +24,60 @@ class SignInUpDemo extends React.Component {
 
     }
     onClick(){
-        const url = 'http://localhost:8080/api/bsb-tournaments/viewer/3';
+        const url = 'http://localhost:8080/api/authenticate';
+        const data= {
+            "password":"BsbV2",
+            "rememberMe":true,
+            "username":"admin"
+        };
         var this_ = this;
         new Promise((resolve,reject)=>{
-            fetch(url)
+            fetch(url,{
+                    method:'POST',
+                    headers:{
+                        'Accept':'application/json',
+                        'Content-type':'application/json'
+                    },
+                    body:JSON.stringify(data)
+                })
                 .then((response)=>response.json())
                 .then((result)=>{
+                    // console.log(result.id_token);
+                    this_.setCookie('id_token',result.id_token,365)
+                    Global.userToken = result.id_token
+                    this_.getCurrentCount(result.id_token)
+                })
+                .then((result)=>{
+                    resolve(result);
+                })
+                .catch(error=>{
+                    reject(error);
+                })
+        })
+    }
+    setCookie(c_name,value,expiredays){
+        var exdate=new Date()
+        exdate.setDate(exdate.getDate()+expiredays)
+        document.cookie=c_name+ "=" +escape(value)+
+        ((expiredays==null) ? "" : ";expires="+exdate.toGMTString())
+    }
+
+    getCurrentCount(token){
+        const url = 'http://localhost:8080/api/account';
+        var this_ = this;
+        console.log(token)
+        new Promise((resolve,reject)=>{
+            fetch(url,{
+                    headers:{
+                        'Authorization':'Bearer '+token
+                    }
+                })
+                .then((response)=>response.json())
+                .then((result)=>{
+                    Global.user = result;
                     console.log(result);
-                    this_.setState({
-                        data:result
-                    })
+                    console.log('成功登陆')
+                    hashHistory.push('me')
                 })
                 .then((result)=>{
                     resolve(result);

@@ -34,9 +34,9 @@ export default class Me extends React.Component {
                 <MenuBar tab='me'></MenuBar>
                 Me
                 <Button type="primary" inline size="small" 
-                        onClick={() => {
-                            hashHistory.push('signinup')
-                        }}
+                    onClick={() => {
+                        hashHistory.push('signinup')
+                    }}
                 >登录</Button>
                 <TextareaItem
                     title="标题"

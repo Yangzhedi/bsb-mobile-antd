@@ -2,6 +2,7 @@ import React from "react";
 import {ListView, SegmentedControl} from "antd-mobile";
 import MenuBar from "../components/MenuBar";
 
+let Global = require('../Components/Global');
 const data = [
   {
     img: 'https://zos.alipayobjects.com/rmsportal/dKbkpPXKfvZzWCM.png',
@@ -82,6 +83,8 @@ export default class Tournament extends React.Component {
         console.log(value);
     }
     render() {
+        
+        console.log(Global)
         const separator = (sectionID, rowID) => (
             <div key={`${sectionID}-${rowID}`}
                 style={{
@@ -111,9 +114,8 @@ export default class Tournament extends React.Component {
             </div>);
         };
         return (
-            <div style={{backgroundColor:'#eee'}}>
+            <div style={{background:'url(/img/bg.png)'}}>
                 <MenuBar tab='tournament'></MenuBar>
-                Tournament
                 <SegmentedControl class="segmented-control"
                     tintColor={'#cb6228'}
                     values={['进行中', '已结束']}
