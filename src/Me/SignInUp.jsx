@@ -1,5 +1,5 @@
 import React from "react";
-import {hashHistory} from "react-router";
+import {browserHistory} from "react-router";
 import {Button, Tabs, NavBar, InputItem} from "antd-mobile";
 import { createForm } from 'rc-form';
 var marked = require('marked');
@@ -77,7 +77,7 @@ class SignInUpDemo extends React.Component {
                     Global.user = result;
                     console.log(result);
                     console.log('成功登陆')
-                    hashHistory.push('me')
+                    browserHistory.push('me')
                 })
                 .then((result)=>{
                     resolve(result);
@@ -112,8 +112,8 @@ class SignInUpDemo extends React.Component {
             <div>
                 <NavBar mode="dark" style={{backgroundColor:'#19191d',color:'white'}}
                         onLeftClick={() => {
-                        hashHistory.goBack();
-                        console.log(hashHistory)
+                        browserHistory.goBack();
+                        console.log(browserHistory)
                     }}
                         rightContent={<b>...</b>}
                 >

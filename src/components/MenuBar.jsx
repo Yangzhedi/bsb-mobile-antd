@@ -1,5 +1,5 @@
 import React from "react";
-import {hashHistory} from "react-router";
+import {browserHistory} from "react-router";
 import {List, TextareaItem, WhiteSpace, NavBar, Drawer, TabBar, Icon} from "antd-mobile";
 var marked = require('marked');
 
@@ -48,6 +48,7 @@ const translation = {
     'station':'小站',
     'team':'小队',
     'me':'我的',
+    'info':'账户信息'
 }
 export default class MenuBar extends React.Component {
     constructor(props) {
@@ -90,42 +91,56 @@ export default class MenuBar extends React.Component {
 
     componentWillMount() {
         
-        const path = hashHistory.getCurrentLocation().pathname;
-        // console.log(path);
+        const path = browserHistory.getCurrentLocation().pathname;
+        console.log(path);
+        // info  要根据route去找me
         // 如果第一次进入，不会触发componentWillReceiveProps, 设置为home
         if(path === '/'){
             this.setState({
                 selectedTab: 'home'
             });
-        }else{
+        } else if (path === '/info'){
             this.setState({
-                selectedTab: hashHistory.getCurrentLocation().pathname.replace('/',''),
+                selectedTab: 'me',
+                title:translation['info']
+            });
+        } else{
+            this.setState({
+                selectedTab: path.replace('/','')
             });
         }
-        console.log(getCookie('id_token'))
-        this.getCurrentCount(getCookie('id_token'))
+        console.log(path.replace('/', ''));
+        // console.log(getCookie('id_token'))
+        // this.getCurrentCount(getCookie('id_token'))
     }
     
     
     // 当节点初次被放入的时候 componentWillReceiveProps 并不会被触发。
     componentWillReceiveProps(nextprops) {
-        // console.log(nextprops);
-        this.setState({
-            selectedTab: nextprops.tab,
-            title: translation[nextprops.tab]
-        });
+        console.log(nextprops);
+        if(nextprops.title){
+            this.setState({
+                selectedTab: nextprops.tab,
+                title: translation[nextprops.title]
+            })
+        }else{
+            this.setState({
+                selectedTab: nextprops.tab,
+                title: translation[nextprops.tab]
+            })
+        }
     }
     render() {
         // console.log(this.props.route, this.props.params, this.props.routeParams);
         // console.log(this.state.selectedTab);
         
-        console.log('先进我')
+        // console.log('先进我')
         return (
             <div className="container">
                 <NavBar mode="dark" style={{backgroundColor:'#19191d',color:'white'}}
                     onLeftClick={() => {
-                        hashHistory.goBack();
-                        console.log(hashHistory)
+                        browserHistory.goBack();
+                        console.log(browserHistory)
                     }}
                     rightContent={<b onClick={() => this.setState({ open: true,hidden:!this.state.hidden })}>...</b>}
                 >
@@ -148,7 +163,7 @@ export default class MenuBar extends React.Component {
                             selectedIcon={<Icon type={item.selectedIcon} />}
                             selected={this.state.selectedTab === item.key}
                             onPress={() => {
-                                hashHistory.push(item.link)
+                                browserHistory.push(item.link)
                             }}
                         >
                         </TabBar.Item>

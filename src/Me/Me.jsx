@@ -1,5 +1,5 @@
 import React from "react";
-import {hashHistory} from "react-router";
+import {browserHistory} from "react-router";
 import {Button, Tabs, Steps, TextareaItem} from "antd-mobile";
 import MenuBar from "../components/MenuBar";
 
@@ -35,7 +35,7 @@ export default class Me extends React.Component {
                 Me
                 <Button type="primary" inline size="small" 
                     onClick={() => {
-                        hashHistory.push('signinup')
+                        browserHistory.push('signinup')
                     }}
                 >登录</Button>
                 <TextareaItem
@@ -51,6 +51,13 @@ export default class Me extends React.Component {
                     }}
                 />
                 <div dangerouslySetInnerHTML={{__html: marked(this.state.value)}}></div>
+                <Button type="primary" inline size="small"
+                        onClick={() => {
+                        browserHistory.push('info')
+                    }}
+                >info</Button>
+
+
             </div>
         );
     }
