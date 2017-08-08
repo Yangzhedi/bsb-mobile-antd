@@ -3,7 +3,7 @@ import {hashHistory} from "react-router";
 import {Button, Tabs, NavBar, InputItem} from "antd-mobile";
 import { createForm } from 'rc-form';
 var marked = require('marked');
-let Global = require('../Components/Global');
+let Global = require('../components/Global');
 
 class SignInUpDemo extends React.Component {
     constructor(props) {

@@ -2,7 +2,8 @@ import React from "react";
 import {SearchBar, Tabs, Steps, Icon, WhiteSpace} from "antd-mobile";
 import MenuBar from "../components/MenuBar";
 
-let Global = require('../Components/Global');
+let Global = require('../components/Global');
+import { setCookie } from '../components/Cookie';
 const TabPane = Tabs.TabPane;
 
 export default class Station extends React.Component {
@@ -16,6 +17,7 @@ export default class Station extends React.Component {
 
     handleTabClick(key) {
         console.log('onTabClick', key);
+        console.log(setCookie)
     }
 
     render() {

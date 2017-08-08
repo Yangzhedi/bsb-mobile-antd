@@ -3,7 +3,7 @@ import {createForm} from "rc-form";
 import {Picker, NavBar, List, Checkbox, Button} from "antd-mobile";
 import MenuBar from "../components/MenuBar"; // moment.min ~= 48kb
 const CheckboxItem = Checkbox.CheckboxItem;
-let Global = require('../Components/Global');
+let Global = require('../components/Global');
 
 // 如果不是使用 List.Item 作为 children
 const CustomChildren = (props) => {

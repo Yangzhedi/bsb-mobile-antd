@@ -3,7 +3,8 @@ import {hashHistory} from "react-router";
 import {List, TextareaItem, WhiteSpace, NavBar, Drawer, TabBar, Icon} from "antd-mobile";
 var marked = require('marked');
 
-let Global = require('../Components/Global');
+let Global = require('../components/Global');
+import { getCookie } from '../components/Cookie';
 // import MenuBar from './MenuBar';
 const tabBarData = [{
     title: '首页',
@@ -60,20 +61,7 @@ export default class MenuBar extends React.Component {
             hidden: false
         };
 
-        this.getCookie = this.getCookie.bind(this);
         this.getCurrentCount = this.getCurrentCount.bind(this);
-    }
-    getCookie(c_name){
-        if (document.cookie.length>0){
-            var c_start=document.cookie.indexOf(c_name + "=")
-            if (c_start!=-1){ 
-                c_start=c_start + c_name.length+1 
-                var c_end=document.cookie.indexOf(";",c_start)
-                if (c_end==-1) c_end=document.cookie.length
-                return unescape(document.cookie.substring(c_start,c_end))
-            } 
-        }
-        return ""
     }
     getCurrentCount(token){
         const url = 'http://localhost:8080/api/account';
@@ -114,8 +102,8 @@ export default class MenuBar extends React.Component {
                 selectedTab: hashHistory.getCurrentLocation().pathname.replace('/',''),
             });
         }
-        console.log(this.getCookie('id_token'))
-        this.getCurrentCount(this.getCookie('id_token'))
+        console.log(getCookie('id_token'))
+        this.getCurrentCount(getCookie('id_token'))
     }
     
     

@@ -2,7 +2,7 @@ import React from "react";
 import {ListView, SegmentedControl} from "antd-mobile";
 import MenuBar from "../components/MenuBar";
 
-let Global = require('../Components/Global');
+let Global = require('../components/Global');
 const data = [
   {
     img: 'https://zos.alipayobjects.com/rmsportal/dKbkpPXKfvZzWCM.png',
@@ -83,7 +83,7 @@ export default class Tournament extends React.Component {
         console.log(value);
     }
     render() {
-        
+
         console.log(Global)
         const separator = (sectionID, rowID) => (
             <div key={`${sectionID}-${rowID}`}
