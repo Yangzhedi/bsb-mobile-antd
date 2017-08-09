@@ -4,6 +4,7 @@ import {List, TextareaItem, WhiteSpace, NavBar, Drawer, TabBar, Icon, ActivityIn
 
 let Global = require('../components/Global');
 import { getCookie } from '../components/Cookie';
+import  HTTPUtil  from '../components/HTTPUtil';
 // import MenuBar from './MenuBar';
 const tabBarData = [{
     title: '首页',
@@ -73,7 +74,18 @@ export default class MenuBar extends React.Component {
         const url = 'http://localhost:8080/api/account';
         var this_ = this;
         // console.log(token)
-        new Promise((resolve,reject)=>{
+        HTTPUtil.get(url, null, {
+            'Authorization':'Bearer '+token
+        }).then((result)=>{
+            if(Global.user == undefined){
+                Global.user = result;
+                console.log(Global);
+                this_.getCurrentInfo(token)
+                console.log('成功登陆,第一次初始化Global')
+            }
+            console.log('成功登陆')
+        })
+        /*new Promise((resolve,reject)=>{
             fetch(url,{
                     headers:{
                         'Authorization':'Bearer '+token
@@ -95,7 +107,7 @@ export default class MenuBar extends React.Component {
                 .catch(error=>{
                     reject(error);
                 })
-        })
+        })*/
     }
     getCurrentInfo(token){
         const url =  'http://localhost:8080/api/bsb-person-infos';
