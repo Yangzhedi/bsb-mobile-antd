@@ -6,7 +6,8 @@ let Global = require('../components/Global');
 import { getCookie } from '../components/Cookie';
 import  HTTPUtil  from '../components/HTTPUtil';
 // import MenuBar from './MenuBar';
-const tabBarData = [{
+const tabBarData = [
+    {
     title: '首页',
     key: 'home',
     link: '/home',

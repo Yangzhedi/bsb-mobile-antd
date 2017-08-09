@@ -1,5 +1,8 @@
-var HTTPUtil = {};
 
+
+import { getCookie } from './Cookie';
+var id_token = getCookie('id_token')
+var HTTPUtil = {};
 /**
  * 基于 fetch 封装的 GET请求
  * @param url
