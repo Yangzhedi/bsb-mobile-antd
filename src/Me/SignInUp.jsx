@@ -1,9 +1,10 @@
 import React from "react";
-import {browserHistory} from "react-router";
+import {hashHistory} from "react-router";
 import {Button, Tabs, NavBar, InputItem} from "antd-mobile";
 import { createForm } from 'rc-form';
 var marked = require('marked');
 let Global = require('../components/Global');
+import { get } from '../components/FetchRepository';
 
 class SignInUpDemo extends React.Component {
     constructor(props) {
@@ -16,6 +17,7 @@ class SignInUpDemo extends React.Component {
         this.onChange = this.onChange.bind(this);
         this.onClick = this.onClick.bind(this);
         this.getCurrentCount = this.getCurrentCount.bind(this);
+        this.getCurrentInfo = this.getCurrentInfo.bind(this);
     }
     componentDidMount() {
         // this.props.changeTitle('Stage 2');
@@ -43,7 +45,7 @@ class SignInUpDemo extends React.Component {
                 .then((response)=>response.json())
                 .then((result)=>{
                     // console.log(result.id_token);
-                    this_.setCookie('id_token',result.id_token,365)
+                    this_.setCookie('id_token',result.id_token,5)
                     Global.userToken = result.id_token
                     this_.getCurrentCount(result.id_token)
                 })
@@ -65,28 +67,57 @@ class SignInUpDemo extends React.Component {
     getCurrentCount(token){
         const url = 'http://localhost:8080/api/account';
         var this_ = this;
+        new Promise((resolve,reject)=>{
+            fetch(url,{
+                headers:{
+                    'Authorization':'Bearer '+token
+                }
+            })
+            .then((response)=>response.json())
+            .then((result)=>{
+                Global.user = result;
+                console.log(result);
+                this_.getCurrentInfo(token)
+                console.log('成功登陆')
+                setTimeout(function(){
+                    hashHistory.push('me')
+                },500)
+                console.log(hashHistory)
+            })
+            .then((result)=>{
+                resolve(result);
+            })
+            .catch(error=>{
+                reject(error);
+            })
+        })
+    }
+
+    getCurrentInfo(token){
+        const url =  'http://localhost:8080/api/bsb-person-infos';
+        var this_ = this;
         console.log(token)
         new Promise((resolve,reject)=>{
             fetch(url,{
-                    headers:{
-                        'Authorization':'Bearer '+token
-                    }
-                })
-                .then((response)=>response.json())
-                .then((result)=>{
-                    Global.user = result;
-                    console.log(result);
-                    console.log('成功登陆')
-                    browserHistory.push('me')
-                })
-                .then((result)=>{
-                    resolve(result);
-                })
-                .catch(error=>{
-                    reject(error);
-                })
+                headers:{
+                    'Authorization':'Bearer '+token
+                }
+            })
+            .then((response)=>response.json())
+            .then((result)=>{
+                Global.person = result;
+                console.log(result);
+                console.log('getCurrentInfo')
+            })
+            .then((result)=>{
+                resolve(result);
+            })
+            .catch(error=>{
+                reject(error);
+            })
         })
     }
+
     onErrorClick(){
         if (this.state.hasError) {
             Toast.info('Please enter 11 digits');
@@ -112,8 +143,8 @@ class SignInUpDemo extends React.Component {
             <div>
                 <NavBar mode="dark" style={{backgroundColor:'#19191d',color:'white'}}
                         onLeftClick={() => {
-                        browserHistory.goBack();
-                        console.log(browserHistory)
+                        hashHistory.goBack();
+                        console.log(hashHistory)
                     }}
                         rightContent={<b>...</b>}
                 >

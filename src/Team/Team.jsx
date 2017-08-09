@@ -58,7 +58,7 @@ class Team extends React.Component {
         const {getFieldProps} = this.props.form;
         const {pickerValue, dpValue} = this.state;
         console.log(Global)
-        console.log(document.cookie)
+        // console.log(document.cookie)
         return (
             <div>
                 <MenuBar tab='team'></MenuBar>

@@ -18,7 +18,7 @@ import SignInUp from './Me/SignInUp';
 import './index.less';
 
 ReactDOM.render(
-  <Router history={browserHistory}>
+  <Router history={hashHistory}>
     <Route path="/">
       <IndexRoute component={Home} />
       <Route path="home" component={Home} />

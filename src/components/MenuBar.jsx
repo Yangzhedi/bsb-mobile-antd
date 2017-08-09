@@ -1,7 +1,6 @@
 import React from "react";
-import {browserHistory} from "react-router";
-import {List, TextareaItem, WhiteSpace, NavBar, Drawer, TabBar, Icon} from "antd-mobile";
-var marked = require('marked');
+import {hashHistory} from "react-router";
+import {List, TextareaItem, WhiteSpace, NavBar, Drawer, TabBar, Icon, ActivityIndicator} from "antd-mobile";
 
 let Global = require('../components/Global');
 import { getCookie } from '../components/Cookie';
@@ -51,6 +50,10 @@ const translation = {
     'info':'账户信息'
 }
 export default class MenuBar extends React.Component {
+    static defaultProps = {
+        dataIsReady: () => {}
+    };
+
     constructor(props) {
         super(props);
         this.state = {
@@ -59,15 +62,17 @@ export default class MenuBar extends React.Component {
             focused: false,
             value: '',
             selectedTab: 'home',
-            hidden: false
+            hidden: false,
+            loading: true
         };
 
+        this.getCurrentInfo = this.getCurrentInfo.bind(this);
         this.getCurrentCount = this.getCurrentCount.bind(this);
     }
     getCurrentCount(token){
         const url = 'http://localhost:8080/api/account';
         var this_ = this;
-        console.log(token)
+        // console.log(token)
         new Promise((resolve,reject)=>{
             fetch(url,{
                     headers:{
@@ -76,8 +81,12 @@ export default class MenuBar extends React.Component {
                 })
                 .then((response)=>response.json())
                 .then((result)=>{
-                    Global.user = result;
-                    console.log(result);
+                    if(Global.user == undefined){
+                        Global.user = result;
+                        console.log(Global);
+                        this_.getCurrentInfo(token)
+                        console.log('成功登陆,第一次初始化Global')
+                    }
                     console.log('成功登陆')
                 })
                 .then((result)=>{
@@ -88,11 +97,38 @@ export default class MenuBar extends React.Component {
                 })
         })
     }
+    getCurrentInfo(token){
+        const url =  'http://localhost:8080/api/bsb-person-infos';
+        var this_ = this;
+        // console.log(token)
+        new Promise((resolve,reject)=>{
+            fetch(url,{
+                headers:{
+                    'Authorization':'Bearer '+token
+                }
+            })
+            .then((response)=>response.json())
+            .then((result)=>{
+                Global.person = result;
+                // console.log(result);
+                // console.log('getCurrentInfo')
 
+                this_.props.dataIsReady(false)
+                this_.setState({
+                    loading:false
+                })
+            })
+            .then((result)=>{
+                resolve(result);
+            })
+            .catch(error=>{
+                reject(error);
+            })
+        })
+    }
     componentWillMount() {
-        
-        const path = browserHistory.getCurrentLocation().pathname;
-        console.log(path);
+        const path = hashHistory.getCurrentLocation().pathname;
+        // console.log(path);
         // info  要根据route去找me
         // 如果第一次进入，不会触发componentWillReceiveProps, 设置为home
         if(path === '/'){
@@ -111,7 +147,16 @@ export default class MenuBar extends React.Component {
         }
         console.log(path.replace('/', ''));
         // console.log(getCookie('id_token'))
-        // this.getCurrentCount(getCookie('id_token'))
+        if(Global.user == undefined){
+
+            this.getCurrentCount(getCookie('id_token'))
+            console.log(getCookie('id_token'))
+        }else{
+            this.props.dataIsReady(false)
+            this.setState({
+                loading:false
+            })
+        }
     }
     
     
@@ -134,19 +179,52 @@ export default class MenuBar extends React.Component {
         // console.log(this.props.route, this.props.params, this.props.routeParams);
         // console.log(this.state.selectedTab);
         
-        // console.log('先进我')
+        console.log('先进我')
         return (
+            !this.state.loading ? (
             <div className="container">
                 <NavBar mode="dark" style={{backgroundColor:'#19191d',color:'white'}}
                     onLeftClick={() => {
-                        browserHistory.goBack();
-                        console.log(browserHistory)
+                        hashHistory.goBack();
+                        console.log(hashHistory)
                     }}
                     rightContent={<b onClick={() => this.setState({ open: true,hidden:!this.state.hidden })}>...</b>}
                 >
                     {this.state.title}
                 </NavBar>
-
+                <TabBar
+                    unselectedTintColor="#5A5C5E"
+                    tintColor="#CB6228"
+                    barTintColor="#1c1c1e"
+                    hidden={this.state.hidden}
+                >
+                    {tabBarData.map((item, index) => (
+                        <TabBar.Item
+                            key={item.key}
+                            style={item.style}
+                            title={item.title}
+                            icon={<Icon type={item.icon} />}
+                            selectedIcon={<Icon type={item.selectedIcon} />}
+                            selected={this.state.selectedTab === item.key}
+                            onPress={() => {
+                                hashHistory.push(item.link)
+                            }}
+                        >
+                        </TabBar.Item>
+                    ))}
+                </TabBar>
+                {/*<div className="fixed-bottom">底部固定条</div>*/}
+            </div>) : (<div className="container">
+                <NavBar mode="dark" style={{backgroundColor:'#19191d',color:'white'}}
+                    onLeftClick={() => {
+                        hashHistory.goBack();
+                        console.log(hashHistory)
+                    }}
+                    rightContent={<b onClick={() => this.setState({ open: true,hidden:!this.state.hidden })}>...</b>}
+                >
+                    {this.state.title}
+                </NavBar>
+                {/*<ActivityIndicator animating />*/}
 
                 <TabBar
                     unselectedTintColor="#5A5C5E"
@@ -163,14 +241,12 @@ export default class MenuBar extends React.Component {
                             selectedIcon={<Icon type={item.selectedIcon} />}
                             selected={this.state.selectedTab === item.key}
                             onPress={() => {
-                                browserHistory.push(item.link)
+                                hashHistory.push(item.link)
                             }}
                         >
                         </TabBar.Item>
                     ))}
-                </TabBar>
-                {/*<div className="fixed-bottom">底部固定条</div>*/}
-            </div>
+                </TabBar></div>)
         );
     }
 }
