@@ -4,6 +4,7 @@ import {Button, Tabs, NavBar, InputItem} from "antd-mobile";
 import { createForm } from 'rc-form';
 var marked = require('marked');
 let Global = require('../components/Global');
+import  HTTPUtil  from '../components/HTTPUtil';
 import { get } from '../components/FetchRepository';
 
 class SignInUpDemo extends React.Component {
@@ -33,29 +34,36 @@ class SignInUpDemo extends React.Component {
             "username":"admin"
         };
         var this_ = this;
-        new Promise((resolve,reject)=>{
-            fetch(url,{
-                    method:'POST',
-                    headers:{
-                        'Accept':'application/json',
-                        'Content-type':'application/json'
-                    },
-                    body:JSON.stringify(data)
-                })
-                .then((response)=>response.json())
-                .then((result)=>{
-                    // console.log(result.id_token);
-                    this_.setCookie('id_token',result.id_token,5)
-                    Global.userToken = result.id_token
-                    this_.getCurrentCount(result.id_token)
-                })
-                .then((result)=>{
-                    resolve(result);
-                })
-                .catch(error=>{
-                    reject(error);
-                })
+        HTTPUtil.post(url, data).then((result)=>{
+            // console.log(result.id_token);
+            this_.setCookie('id_token',result.id_token,5)
+            Global.userToken = result.id_token
+            this_.getCurrentCount(result.id_token)
         })
+
+        // new Promise((resolve,reject)=>{
+        //     fetch(url,{
+        //             method:'POST',
+        //             headers:{
+        //                 'Accept':'application/json',
+        //                 'Content-type':'application/json'
+        //             },
+        //             body:JSON.stringify(data)
+        //         })
+        //         .then((response)=>response.json())
+        //         .then((result)=>{
+        //             // console.log(result.id_token);
+        //             this_.setCookie('id_token',result.id_token,5)
+        //             Global.userToken = result.id_token
+        //             this_.getCurrentCount(result.id_token)
+        //         })
+        //         .then((result)=>{
+        //             resolve(result);
+        //         })
+        //         .catch(error=>{
+        //             reject(error);
+        //         })
+        // })
     }
     setCookie(c_name,value,expiredays){
         var exdate=new Date()

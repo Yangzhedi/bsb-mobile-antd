@@ -7,7 +7,7 @@ import { getCookie } from '../components/Cookie';
 import  HTTPUtil  from '../components/HTTPUtil';
 // import MenuBar from './MenuBar';
 const tabBarData = [
-    {
+{
     title: '首页',
     key: 'home',
     link: '/home',
@@ -52,9 +52,9 @@ const translation = {
     'info':'账户信息'
 }
 export default class MenuBar extends React.Component {
-    static defaultProps = {
-        dataIsReady: () => {}
-    };
+    // static defaultProps = {
+    //     dataIsReady: () => {}
+    // };
 
     constructor(props) {
         super(props);
@@ -67,78 +67,8 @@ export default class MenuBar extends React.Component {
             hidden: false,
             loading: true
         };
-
-        this.getCurrentInfo = this.getCurrentInfo.bind(this);
-        this.getCurrentCount = this.getCurrentCount.bind(this);
     }
-    getCurrentCount(token){
-        const url = 'http://localhost:8080/api/account';
-        var this_ = this;
-        // console.log(token)
-        HTTPUtil.get(url, null, {
-            'Authorization':'Bearer '+token
-        }).then((result)=>{
-            if(Global.user == undefined){
-                Global.user = result;
-                console.log(Global);
-                this_.getCurrentInfo(token)
-                console.log('成功登陆,第一次初始化Global')
-            }
-            console.log('成功登陆')
-        })
-        /*new Promise((resolve,reject)=>{
-            fetch(url,{
-                    headers:{
-                        'Authorization':'Bearer '+token
-                    }
-                })
-                .then((response)=>response.json())
-                .then((result)=>{
-                    if(Global.user == undefined){
-                        Global.user = result;
-                        console.log(Global);
-                        this_.getCurrentInfo(token)
-                        console.log('成功登陆,第一次初始化Global')
-                    }
-                    console.log('成功登陆')
-                })
-                .then((result)=>{
-                    resolve(result);
-                })
-                .catch(error=>{
-                    reject(error);
-                })
-        })*/
-    }
-    getCurrentInfo(token){
-        const url =  'http://localhost:8080/api/bsb-person-infos';
-        var this_ = this;
-        // console.log(token)
-        new Promise((resolve,reject)=>{
-            fetch(url,{
-                headers:{
-                    'Authorization':'Bearer '+token
-                }
-            })
-            .then((response)=>response.json())
-            .then((result)=>{
-                Global.person = result;
-                // console.log(result);
-                // console.log('getCurrentInfo')
-
-                this_.props.dataIsReady(false)
-                this_.setState({
-                    loading:false
-                })
-            })
-            .then((result)=>{
-                resolve(result);
-            })
-            .catch(error=>{
-                reject(error);
-            })
-        })
-    }
+   
     componentWillMount() {
         const path = hashHistory.getCurrentLocation().pathname;
         // console.log(path);
@@ -160,22 +90,13 @@ export default class MenuBar extends React.Component {
         }
         console.log(path.replace('/', ''));
         // console.log(getCookie('id_token'))
-        if(Global.user == undefined){
-
-            this.getCurrentCount(getCookie('id_token'))
-            console.log(getCookie('id_token'))
-        }else{
-            this.props.dataIsReady(false)
-            this.setState({
-                loading:false
-            })
-        }
+        
     }
     
     
     // 当节点初次被放入的时候 componentWillReceiveProps 并不会被触发。
     componentWillReceiveProps(nextprops) {
-        console.log(nextprops);
+        // console.log(nextprops);
         if(nextprops.title){
             this.setState({
                 selectedTab: nextprops.tab,
@@ -194,7 +115,6 @@ export default class MenuBar extends React.Component {
         
         console.log('先进我')
         return (
-            !this.state.loading ? (
             <div className="container">
                 <NavBar mode="dark" style={{backgroundColor:'#19191d',color:'white'}}
                     onLeftClick={() => {
@@ -227,39 +147,7 @@ export default class MenuBar extends React.Component {
                     ))}
                 </TabBar>
                 {/*<div className="fixed-bottom">底部固定条</div>*/}
-            </div>) : (<div className="container">
-                <NavBar mode="dark" style={{backgroundColor:'#19191d',color:'white'}}
-                    onLeftClick={() => {
-                        hashHistory.goBack();
-                        console.log(hashHistory)
-                    }}
-                    rightContent={<b onClick={() => this.setState({ open: true,hidden:!this.state.hidden })}>...</b>}
-                >
-                    {this.state.title}
-                </NavBar>
-                {/*<ActivityIndicator animating />*/}
-
-                <TabBar
-                    unselectedTintColor="#5A5C5E"
-                    tintColor="#CB6228"
-                    barTintColor="#1c1c1e"
-                    hidden={this.state.hidden}
-                >
-                    {tabBarData.map((item, index) => (
-                        <TabBar.Item
-                            key={item.key}
-                            style={item.style}
-                            title={item.title}
-                            icon={<Icon type={item.icon} />}
-                            selectedIcon={<Icon type={item.selectedIcon} />}
-                            selected={this.state.selectedTab === item.key}
-                            onPress={() => {
-                                hashHistory.push(item.link)
-                            }}
-                        >
-                        </TabBar.Item>
-                    ))}
-                </TabBar></div>)
+            </div>
         );
     }
 }
