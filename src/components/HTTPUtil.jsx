@@ -1,19 +1,7 @@
-
-
 import { getCookie } from './Cookie';
+
 var id_token = getCookie('id_token')
 var HTTPUtil = {};
-if(id_token){
-    var headers = {
-        'Authorization':'Bearer '+ id_token
-    }
-}else{
-    console.log('进来了12321321')
-    var headers = {
-        'Accept':'application/json',
-        'Content-type':'application/json'
-    }
-}
 
 /**
  * 基于 fetch 封装的 GET请求
@@ -22,7 +10,8 @@ if(id_token){
  * @param headers
  * @returns {Promise}
  */
-HTTPUtil.get = function(url, params) {
+HTTPUtil.get = function(url, params, headers) {
+    url = 'https://118.190.81.215/api' + url;
     if (params) {
         let paramsArray = [];
         //encodeURIComponent
@@ -66,7 +55,8 @@ HTTPUtil.get = function(url, params) {
  * @param headers
  * @returns {Promise}
  */
-HTTPUtil.post = function (url, formData) {
+HTTPUtil.post = function (url, formData, headers) {
+    url = 'https://118.190.81.215/api' + url;
     return new Promise(function (resolve, reject) {
         fetch(url, {
             method: 'POST',

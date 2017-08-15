@@ -5,7 +5,9 @@ import { createForm } from 'rc-form';
 var marked = require('marked');
 let Global = require('../components/Global');
 import  HTTPUtil  from '../components/HTTPUtil';
-import { get } from '../components/FetchRepository';
+import { getCookie } from '../components/Cookie';
+var id_token = getCookie('id_token')
+
 
 class SignInUpDemo extends React.Component {
     constructor(props) {
@@ -19,6 +21,7 @@ class SignInUpDemo extends React.Component {
         this.onClick = this.onClick.bind(this);
         this.getCurrentCount = this.getCurrentCount.bind(this);
         this.getCurrentInfo = this.getCurrentInfo.bind(this);
+        this.isHaveToken = this.isHaveToken.bind(this);
     }
     componentDidMount() {
         // this.props.changeTitle('Stage 2');
@@ -26,44 +29,34 @@ class SignInUpDemo extends React.Component {
     componentWillMount(){
 
     }
+    isHaveToken(){
+        if(id_token){
+            return {
+                'Authorization':'Bearer '+ id_token
+            }
+        }else{
+            console.log('进来了12321321')
+            return{
+                'Accept':'application/json',
+                'Content-type':'application/json'
+            }
+        }
+    }
     onClick(){
-        const url = 'http://localhost:8080/api/authenticate';
+        const url = '/authenticate';
         const data= {
-            "password":"BsbV2",
+            "password":"12345",
             "rememberMe":true,
-            "username":"admin"
+            "username":"13120024922"
         };
         var this_ = this;
-        HTTPUtil.post(url, data).then((result)=>{
+        const headers = this.isHaveToken();
+        HTTPUtil.post(url, data, headers).then((result)=>{
             // console.log(result.id_token);
             this_.setCookie('id_token',result.id_token,5)
             Global.userToken = result.id_token
             this_.getCurrentCount(result.id_token)
         })
-
-        // new Promise((resolve,reject)=>{
-        //     fetch(url,{
-        //             method:'POST',
-        //             headers:{
-        //                 'Accept':'application/json',
-        //                 'Content-type':'application/json'
-        //             },
-        //             body:JSON.stringify(data)
-        //         })
-        //         .then((response)=>response.json())
-        //         .then((result)=>{
-        //             // console.log(result.id_token);
-        //             this_.setCookie('id_token',result.id_token,5)
-        //             Global.userToken = result.id_token
-        //             this_.getCurrentCount(result.id_token)
-        //         })
-        //         .then((result)=>{
-        //             resolve(result);
-        //         })
-        //         .catch(error=>{
-        //             reject(error);
-        //         })
-        // })
     }
     setCookie(c_name,value,expiredays){
         var exdate=new Date()
@@ -73,56 +66,34 @@ class SignInUpDemo extends React.Component {
     }
 
     getCurrentCount(token){
-        const url = 'http://localhost:8080/api/account';
+        const url = '/account';
         var this_ = this;
-        new Promise((resolve,reject)=>{
-            fetch(url,{
-                headers:{
-                    'Authorization':'Bearer '+token
-                }
-            })
-            .then((response)=>response.json())
-            .then((result)=>{
-                Global.user = result;
-                console.log(result);
-                this_.getCurrentInfo(token)
-                console.log('成功登陆')
-                setTimeout(function(){
-                    hashHistory.push('me')
-                },500)
-                console.log(hashHistory)
-            })
-            .then((result)=>{
-                resolve(result);
-            })
-            .catch(error=>{
-                reject(error);
-            })
+        const headers = {
+            'Authorization':'Bearer '+ token
+        }
+        HTTPUtil.get(url, null, headers).then((result)=>{
+            Global.user = result;
+            console.log(result);
+            this_.getCurrentInfo(token)
+            console.log('成功登陆')
+            
+            console.log(hashHistory)
         })
     }
 
     getCurrentInfo(token){
-        const url =  'http://localhost:8080/api/bsb-person-infos';
+        const url =  '/bsb-person-infos';
         var this_ = this;
-        console.log(token)
-        new Promise((resolve,reject)=>{
-            fetch(url,{
-                headers:{
-                    'Authorization':'Bearer '+token
-                }
-            })
-            .then((response)=>response.json())
-            .then((result)=>{
-                Global.person = result;
-                console.log(result);
-                console.log('getCurrentInfo')
-            })
-            .then((result)=>{
-                resolve(result);
-            })
-            .catch(error=>{
-                reject(error);
-            })
+        const headers = {
+            'Authorization':'Bearer '+ token
+        };
+        HTTPUtil.get(url, null, headers).then((result)=>{
+            Global.person = result;
+            console.log(result);
+            setTimeout(function(){
+                hashHistory.push('me')
+            },2000);
+            console.log('getCurrentInfo')
         })
     }
 
