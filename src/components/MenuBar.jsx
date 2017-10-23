@@ -29,7 +29,7 @@ const tabBarData = [
     selectedIcon: 'cross-circle',
     style: {fontSize: 20}
 }, {
-    title: '小站',
+    title: '新闻',
     key: 'station',
     link: '/station',
     icon: 'koubei-o',
@@ -59,7 +59,7 @@ export default class MenuBar extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            title: 'app',
+            title: '首页',
             open: false,
             focused: false,
             value: '',
@@ -88,7 +88,7 @@ export default class MenuBar extends React.Component {
                 selectedTab: path.replace('/','')
             });
         }
-        console.log(path.replace('/', ''));
+        // console.log(path.replace('/', ''));
         // console.log(getCookie('id_token'))
         
     }
@@ -96,7 +96,7 @@ export default class MenuBar extends React.Component {
     
     // 当节点初次被放入的时候 componentWillReceiveProps 并不会被触发。
     componentWillReceiveProps(nextprops) {
-        // console.log(nextprops);
+        console.log(nextprops);
         if(nextprops.title){
             this.setState({
                 selectedTab: nextprops.tab,
@@ -140,6 +140,7 @@ export default class MenuBar extends React.Component {
                             selectedIcon={<Icon type={item.selectedIcon} />}
                             selected={this.state.selectedTab === item.key}
                             onPress={() => {
+                                // this.setState({title:item.title})
                                 hashHistory.push(item.link)
                             }}
                         >

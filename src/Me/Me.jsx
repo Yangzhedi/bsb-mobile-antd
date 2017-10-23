@@ -90,14 +90,27 @@ export default class Me extends React.Component {
         var this_ = this;
         // console.log(token)
 
-        HTTPUtil.get(url, null,headers).then((result)=>{
+        // HTTPUtil.get(url, null,headers).then((result)=>{
+        //         Global.person = result;
+        //         // console.log(result);
+        //         // console.log('getCurrentInfo')
+        //         this_.setState({
+        //             loading:false
+        //         })
+        //     })
+        HTTPUtil.ajax({
+            method: 'GET',
+            url: url,
+            success: function (response) {
                 Global.person = result;
                 // console.log(result);
                 // console.log('getCurrentInfo')
                 this_.setState({
                     loading:false
                 })
-            })
+            }
+        });
+
     }
     dataIsReady(bool){
         console.log(bool)

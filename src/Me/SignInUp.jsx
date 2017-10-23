@@ -51,12 +51,27 @@ class SignInUpDemo extends React.Component {
         };
         var this_ = this;
         const headers = this.isHaveToken();
-        HTTPUtil.post(url, data, headers).then((result)=>{
-            // console.log(result.id_token);
-            this_.setCookie('id_token',result.id_token,5)
-            Global.userToken = result.id_token
-            this_.getCurrentCount(result.id_token)
-        })
+        // HTTPUtil.post(url, data, headers).then((result)=>{
+        //     // console.log(result.id_token);
+        //     this_.setCookie('id_token',result.id_token,5)
+        //     Global.userToken = result.id_token
+        //     this_.getCurrentCount(result.id_token)
+        // })
+        HTTPUtil.ajax({
+            method: 'POST',
+            url: url,
+            data: data,
+            success: function (response) {
+                this_.setCookie('id_token',result.id_token,5)
+                Global.userToken = result.id_token
+                this_.getCurrentCount(result.id_token)
+            }
+        });
+
+
+
+
+
     }
     setCookie(c_name,value,expiredays){
         var exdate=new Date()
@@ -71,14 +86,23 @@ class SignInUpDemo extends React.Component {
         const headers = {
             'Authorization':'Bearer '+ token
         }
-        HTTPUtil.get(url, null, headers).then((result)=>{
-            Global.user = result;
-            console.log(result);
-            this_.getCurrentInfo(token)
-            console.log('成功登陆')
+        // HTTPUtil.get(url, null, headers).then((result)=>{
+        //     Global.user = result;
+        //     console.log(result);
+        //     this_.getCurrentInfo(token)
+        //     console.log('成功登陆')
             
-            console.log(hashHistory)
-        })
+        //     console.log(hashHistory)
+        // })
+        HTTPUtil.ajax({
+            method: 'POST',
+            url: url,
+            success: function (response) {
+                Global.user = result;
+                console.log(result);
+                this_.getCurrentInfo(token)
+            }
+        });
     }
 
     getCurrentInfo(token){
@@ -87,14 +111,25 @@ class SignInUpDemo extends React.Component {
         const headers = {
             'Authorization':'Bearer '+ token
         };
-        HTTPUtil.get(url, null, headers).then((result)=>{
-            Global.person = result;
-            console.log(result);
-            setTimeout(function(){
-                hashHistory.push('me')
-            },2000);
-            console.log('getCurrentInfo')
-        })
+        // HTTPUtil.get(url, null, headers).then((result)=>{
+        //     Global.person = result;
+        //     console.log(result);
+        //     setTimeout(function(){
+        //         hashHistory.push('me')
+        //     },2000);
+        //     console.log('getCurrentInfo')
+        // })
+        HTTPUtil.ajax({
+            method: 'GET',
+            url: url,
+            success: function (response) {
+                Global.person = result;
+                console.log(result);
+                setTimeout(function(){
+                    hashHistory.push('me')
+                },2000);
+            }
+        });
     }
 
     onErrorClick(){
@@ -122,9 +157,9 @@ class SignInUpDemo extends React.Component {
             <div>
                 <NavBar mode="dark" style={{backgroundColor:'#19191d',color:'white'}}
                         onLeftClick={() => {
-                        hashHistory.goBack();
-                        console.log(hashHistory)
-                    }}
+                            hashHistory.goBack();
+                            console.log(hashHistory)
+                        }}
                         rightContent={<b>...</b>}
                 >
                     {this.state.title}
