@@ -81,7 +81,7 @@ HTTPUtil.post = function (url, formData, headers) {
 
 HTTPUtil.ajax = function (opt) {
     opt = opt || {};
-    console.log(opt)
+    // console.log(opt)
     opt.method = opt.method.toUpperCase() || 'POST';
     opt.url = ('http://localhost:8080/api' + opt.url) || '';
     opt.async = opt.async || true;

@@ -96,7 +96,7 @@ export default class MenuBar extends React.Component {
     
     // 当节点初次被放入的时候 componentWillReceiveProps 并不会被触发。
     componentWillReceiveProps(nextprops) {
-        console.log(nextprops);
+        // console.log(nextprops);
         if(nextprops.title){
             this.setState({
                 selectedTab: nextprops.tab,
@@ -113,13 +113,13 @@ export default class MenuBar extends React.Component {
         // console.log(this.props.route, this.props.params, this.props.routeParams);
         // console.log(this.state.selectedTab);
         
-        console.log('先进我')
+        // console.log('先进我')
         return (
             <div className="container">
                 <NavBar mode="dark" style={{backgroundColor:'#19191d',color:'white'}}
                     onLeftClick={() => {
                         hashHistory.goBack();
-                        console.log(hashHistory)
+                        // console.log(hashHistory)
                     }}
                     rightContent={<b onClick={() => this.setState({ open: true,hidden:!this.state.hidden })}>...</b>}
                 >

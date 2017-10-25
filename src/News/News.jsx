@@ -8,26 +8,10 @@ import { setCookie } from '../components/Cookie';
 const TabPane = Tabs.TabPane;
 
 
-const data = [
-  {
-    img: 'https://zos.alipayobjects.com/rmsportal/dKbkpPXKfvZzWCM.png',
-    title: '开始时间：2017/05/05 11:11',
-    des: '第十届大腿杯总决赛',
-  },
-  {
-    img: 'https://zos.alipayobjects.com/rmsportal/XmwCzSeJiqpkuMB.png',
-    title: '开始时间：2017/05/05 22:22',
-    des: '第十届大腿杯总决赛',
-  },
-  {
-    img: 'https://zos.alipayobjects.com/rmsportal/hfVtzEhPzTUewPm.png',
-    title: '开始时间：2017/05/05 33:33',
-    des: '第十届大腿杯总决赛',
-  },
-];
-let index = data.length - 1;
+const data = [ ];
+let index = 0;
 
-const NUM_ROWS = 20;
+const NUM_ROWS = 2;
 let pageIndex = 0;
 
 export default class News extends React.Component {
@@ -57,6 +41,7 @@ export default class News extends React.Component {
         // this.props.changeTitle('Stage 2');
         setTimeout(() => {
             this.rData = this.genData();
+            console.log(this.rData)
             this.setState({
                 dataSource: this.state.dataSource.cloneWithRows(this.rData),
                 isLoading: false,
@@ -69,10 +54,13 @@ export default class News extends React.Component {
         HTTPUtil.ajax({
             method: 'GET',
             url: url,
+            data:{page:pageIndex,size:NUM_ROWS,sort:'id,asc'},
             success: function (response) {
-                console.log(response)
+                // console.log(JSON.parse(response))
+                // data = data.concat(JSON.parse(response).content);
+                index = JSON.parse(response).content.length - 1
                 this_.setState({
-                    data:response.json,
+                    data:JSON.parse(response).content,
                     ok:'true'
                 })
             },
@@ -93,16 +81,38 @@ export default class News extends React.Component {
         }
         console.log('reach end', event);
         this.setState({ isLoading: true });
-        setTimeout(() => {
-            this.rData = { ...this.rData, ...this.genData(++pageIndex) };
-            this.setState({
-                dataSource: this.state.dataSource.cloneWithRows(this.rData),
-                isLoading: false,
-            });
-        }, 1000);
-    }
-    onChange = (e) => {
-        console.log(`selectedIndex:${e.nativeEvent.selectedSegmentIndex}`);
+        const url = '/ms-article/get-all-article';
+        var this_ = this;
+        var resObj = null;
+        HTTPUtil.ajax({
+            method: 'GET',
+            url: url,
+            data:{page:++pageIndex,size:NUM_ROWS,sort:'id,asc'},
+            success: function (response) {
+                // console.log(response)
+                resObj = JSON.parse(response);
+                // data = data.concat(JSON.parse(response).content);
+                this_.setState({
+                    data:this_.state.data.concat(JSON.parse(response).content),
+                    ok:'true'
+                })
+                // console.log(resObj)
+                // index = this_.state.data.length + resObj.content.length - 1;
+
+                console.log(this_.state.data.length,resObj.totalElements)
+                if(this_.state.data.length >= resObj.totalElements) return;
+                this_.rData = { ...this_.rData, ...this_.genData(pageIndex) };
+                // console.log(this_.rData)
+                this_.setState({
+                    dataSource: this_.state.dataSource.cloneWithRows(this_.rData),
+                    isLoading: false,
+                });
+            },
+            error: function (response) {
+                console.log(response)
+            }
+        });
+        
     }
     onValueChange = (value) => {
         console.log(value);
@@ -117,7 +127,6 @@ export default class News extends React.Component {
     }
 
     render() {
-        console.log(Global)
         const separator = (sectionID, rowID) => (
             <div key={`${sectionID}-${rowID}`}
                 style={{
@@ -129,23 +138,26 @@ export default class News extends React.Component {
             />
         );
         const row = (rowData, sectionID, rowID) => {
+            console.log(rowData)
             if (index < 0) {
-                index = data.length - 1;
+                index = this.state.data.length - 1;
             }
-            const obj = data[index--]; 
+            const obj = this.state.data[index--]; 
+            // console.log(this.state.data,index)
             return (
-                <div key={rowID} className="row">
-                    <div style={{ display: '-webkit-box', display: 'flex', padding: '0.3rem 0' }}>
-                    <img style={{ height: '1.28rem', marginRight: '0.3rem' }} src={obj.img} alt="icon" />
+                <div key={rowID} className="row" style={{ height: '3rem'}}>
+                    <div style={{ display: '-webkit-box', display: 'flex', padding: '0.7rem 0' }}>
                     <div className="row-text">
-                        <div style={{ marginBottom: '0.16rem', fontWeight: 'bold' }}>{obj.des}</div>
+                        <div style={{ marginBottom: '0.16rem', fontWeight: 'bold' }}>{obj.content}</div>
                         <div><span style={{ fontSize: '0.6rem', color: '#FF6E27' }}>{rowID}</span>¥</div>
+                        <div>ID:<span style={{ fontSize: '0.6rem', color: '#FF6E27' }}>{obj.id}</span></div>
                     </div>
                     
                 </div>
-                <div className="row-title">{obj.title}</div>
+                <div className="row-title">{obj.content}</div>
             </div>);
         };
+        console.log(this.state.data)
         return (
             <div style={{background:'url(/img/bg.png)'}}>
                 <MenuBar tab='news'></MenuBar>

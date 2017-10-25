@@ -45,9 +45,9 @@ class SignInUpDemo extends React.Component {
     onClick(){
         const url = '/authenticate';
         const data= {
-            "password":"12345",
+            "password":"BsbV2",
             "rememberMe":true,
-            "username":"13120024922"
+            "username":"admin"
         };
         var this_ = this;
         const headers = this.isHaveToken();
