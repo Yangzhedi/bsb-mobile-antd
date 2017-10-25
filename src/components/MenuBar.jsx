@@ -30,8 +30,8 @@ const tabBarData = [
     style: {fontSize: 20}
 }, {
     title: '新闻',
-    key: 'station',
-    link: '/station',
+    key: 'news',
+    link: '/news',
     icon: 'koubei-o',
     selectedIcon: 'koubei',
     style: {fontSize: 20}
@@ -46,7 +46,7 @@ const tabBarData = [
 const translation = {
     'home':'首页',
     'tournament':'赛事',
-    'station':'小站',
+    'news':'新闻',
     'team':'小队',
     'me':'我的',
     'info':'账户信息'

@@ -10,7 +10,7 @@ var HTTPUtil = {};
  * @returns {Promise}
  */
 HTTPUtil.get = function(url, params, headers) {
-    url = 'https://118.190.81.215/api' + url;
+    url = 'http://localhost:8080/api' + url;
     if (params) {
         let paramsArray = [];
         //encodeURIComponent
@@ -55,7 +55,7 @@ HTTPUtil.get = function(url, params, headers) {
  * @returns {Promise}
  */
 HTTPUtil.post = function (url, formData, headers) {
-    url = 'https://118.190.81.215/api' + url;
+    url = 'http://localhost:8080/api' + url;
     return new Promise(function (resolve, reject) {
         fetch(url, {
             method: 'POST',
@@ -106,7 +106,7 @@ HTTPUtil.ajax = function (opt) {
         xmlHttp.send(postData);
     }
     else if (opt.method.toUpperCase() === 'GET') {
-        xmlHttp.open(opt.method, opt.url + '?' + postData, opt.async);
+        xmlHttp.open(opt.method, opt.url + (postData?'?':'') + postData, opt.async);
         xmlHttp.send(null);
     } 
     xmlHttp.onreadystatechange = function () {

@@ -6,6 +6,7 @@ const CheckboxItem = Checkbox.CheckboxItem;
 import  HTTPUtil  from '../components/HTTPUtil';
 let Global = require('../components/Global');
 
+
 // 如果不是使用 List.Item 作为 children
 const CustomChildren = (props) => {
     return (
@@ -37,16 +38,18 @@ class Team extends React.Component {
         // this.props.changeTitle('Stage 3');
     }
     onClick(){
-        const url = '/bsb-tournaments/viewer/3';
+        // const url = '/bsb-tournaments/viewer/3';
+        const url = '/ms-article/get-all-article';
         var this_ = this;
         // new Promise((resolve,reject)=>{
         //     fetch(url)
         //         .then((response)=>response.json())
         //         .then((result)=>{
-                    // console.log(result)
-                    // this_.setState({
-                    //     data:result
-                    // })
+        //             console.log(result)
+        //             this_.setState({
+        //                 data:result,
+        //                 ok:'true'
+        //             })
         //         })
         //         .then((result)=>{
         //             resolve(result);
@@ -66,6 +69,9 @@ class Team extends React.Component {
                     data:response.json,
                     ok:'true'
                 })
+            },
+            error: function (response) {
+                console.log(response)
             }
         });
     }

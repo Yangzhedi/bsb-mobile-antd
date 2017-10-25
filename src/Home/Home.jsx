@@ -61,7 +61,9 @@ export default class Home extends React.Component {
                 Home-
                 <div dangerouslySetInnerHTML={{__html: page}}></div>
                 <SearchBar placeholder="搜索" onSubmit={this.onSubmit}/>
-                <iframe  width='100%' height='100%' style={{border:'none',minHeight:'4rem'}} src="https://www.bisaibang.com/widget/tournament/bracket/3235"></iframe>
+                <iframe  width='100%' height='100%' src="https://www.bisaibang.com/widget/tournament/bracket/3235"
+                    style={{height: '100vh',border:'none',minHeight:'4rem',transform:'scale(2,2)',transformOrigin:'0px 0px'}} 
+                ></iframe>
                 <div style={{height:'1.5rem'}}></div>
             </div>
         );
